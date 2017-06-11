@@ -1,0 +1,26 @@
+2017年6月1日 20:06:17
+
+1.  源代码通过：预处理，编译，汇编，链接，生成可执行文件，windows下为PE文件，Linux下为ELF文件
+2.  静态链接器：
+     把公用库内的目标文件合并到可执行文件内部，使得可执行文件的体积变得庞大。
+     导致可执行文件难以更新。
+     多个程序加载后相同的公用库代码占用了多份内存空间
+
+     动态链接器：
+     仅仅记录动态链接库的路径信息。允许程序运行钱才加载所需的动态链接库，如果已加载在内存中，则不需要重复加载。
+     但是运行时，增加程序执行的时间开销。
+
+3.  GCC工作流程：
+     gcc hello.c -o hello -static --verbose  查看GCC的工作流程（系统默认static编译，所以-static可省略）
+
+     GCC背后使用cc1,as,collect2三个命令，cc1是GCC的编译器，将.c编译成.s，as为汇编命令，
+                                                             将.s文件汇编为.o文件，collect2为链接器命令，是命令ld的封装
+     静态链接时，GCC将C语言运行时库（CRT）内的5个重要的目标文件crtl.o  crti.o   crtbeginT.o  crtend.o   crtn.o
+     以及3个静态库libgcc.a   libgcc_eh.a   libc.a链接到可执行文件中
+     
+     预处理：gcc -E hello.c -o hello.i
+     编译：   gcc -S hello.i -o hello.s
+     汇编:     gcc -c hello.s -o hello.o     //hello.o不能通过vim查看，用指令 objdump -sd hello.o 查看
+     链接:     gcc hello.o -o hello     //可以通过objdump查看静态链接后的可执行文件内的信息
+
+  
