@@ -1,13 +1,25 @@
 //2017年10月11日  14点20分
 //张岩
-//扫描器
+//扫描器，关键字表
 
 #include "Scanner.h"
+#include <assert.h>
 
 #include <string.h>
 
-Scanner::Scanner()
+
+//扫描器
+Scanner::Scanner(char *name)
 {
+    file = fopen(name,"r"); //打开指定扫描文件
+
+    file = fopen(name,"r");
+
+    assert(file != NULL);   //
+
+    fileName = new char[strlen(name) + 1]();
+    strcpy(fileName,name);
+
     memset(line, 0 ,sizeof(line));
 	lineLen = 0;		//缓冲区内的数据长度
 	readPos = -1;		//读取位置
@@ -17,7 +29,23 @@ Scanner::Scanner()
 	lastch = 0;			//上一个字符	
 }	
 
-char Scanner::scan(FILE *file)
+Scanner::~Scanner()
+{
+
+}
+
+void Scanner::showChar(char ch)
+{
+    if(ch == -1) printf("EOF");
+    else if(ch == '\n') printf("\\n");
+    else if(ch == '\t') printf("\\t");
+    else if(ch == ' ') printf("<blank>");
+    else printf("%c",ch);
+    printf("\t\t<%d>\n",ch);
+}
+
+
+char Scanner::scan()
 {
 	if( !file ){
 		return -1;		//没有文件
@@ -55,7 +83,7 @@ char Scanner::scan(FILE *file)
 
 }
 
-char Scanner::scan1(FILE *file)
+char Scanner::scan1()
 {
 	char ch;
 	if(fscanf(file, "%c" , &ch) == EOF)
@@ -65,5 +93,19 @@ char Scanner::scan1(FILE *file)
 	return ch;
 }
 
+char *Scanner::getFile()
+{
+    return fileName;
+}
+
+int Scanner::getline()
+{
+    return lineNum;
+}
+
+int Scanner::getCol()
+{
+    return colNum;
+}
 
 

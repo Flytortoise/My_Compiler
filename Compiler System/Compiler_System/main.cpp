@@ -6,13 +6,10 @@ using namespace std;
 
 int main()
 {
-    Scanner scanner;
+    Scanner scanner("test.txt");
     char ch;
-
-    FILE *fp = fopen("test.txt","a+");
-
     do{
-        ch = scanner.scan(fp);
+        ch = scanner.scan();
         cout << ch;
     }while(ch != -1);
 
